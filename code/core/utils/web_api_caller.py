@@ -1,6 +1,9 @@
 import re
 import numpy as np
 import pandas as pd
+import incremental
+from time import time, sleep, localtime, strftime
+from datetime import datetime
 
 def get_API(ticker, timestamp, days):
     sub_domain = 'apipubaws'
@@ -44,3 +47,56 @@ def extract_information(raw_json):
     print('\t-----------------------------------------------------')
 
     return raw_json[['ticker','open', 'high', 'low', 'close', 'volume', 'date']]
+
+def get_stock_historical_price(stock_name, current_timestamp):
+    raw = pd.DataFrame()
+    while True:
+        date_to_get = str(datetime.fromtimestamp(current_timestamp))[:10]
+        print(f'All 365 days historical prices of ticker {stock_name} before {date_to_get}')
+        
+        api_url = get_API(ticker = stock_name, timestamp = current_timestamp, days = 365)
+        df_url = pd.read_json(api_url)
+        raw = pd.concat([raw, df_url])
+        
+        if df_url.shape[0] == 0:
+            break
+
+        current_timestamp -= 365*24*60*60
+        sleep(0.5)
+    return raw
+
+def get_all_price_history(stocks_list, processing_ref, processing_df):
+    print("Reading from PROCESSING INDEX file..")
+    __stock_epoch = incremental.incremental_index(saved_file = processing_ref)
+
+    __all_stocks_number = len(stocks_list)
+    for stock in stocks_list[__stock_epoch:]:
+        print('')
+        print(f'Updating all historical prices for ticker {stock}...')
+        print('=====================================================')
+        
+        current_timestamp = int(time())
+        _raw = get_stock_historical_price(stock_name = stock, current_timestamp = current_timestamp)
+        _raw.fillna('', inplace = True)
+
+        print('-----------------------------------------------------')
+        print("Updating PROCESSING DATA..")
+        with open(processing_df, 'a') as raw_f:
+            for _, row in _raw.iterrows():
+                raw_f.write(row.ticker + ",\"" + str(row.data) + "\"," + row.dataT1 + '\n')
+        print("---PROCESSING DATA UPDATED.---")
+        print('-----------------------------------------------------')
+        __stock_epoch += 1
+        print(f'{stock} Completed.')
+        print('{:,}/{:,}'.format(__stock_epoch, __all_stocks_number))
+
+        print('-----------------------------------------------------')
+        print("Updating PROCESSING INDEX..")
+        with open (processing_ref, 'a') as index_f:
+            index_f.write(str(__stock_epoch) + '\n')
+        print("---PROCESS UPDATED.---")
+        print('-----------------------------------------------------')
+        print('=====================================================')
+        print('')
+
+    return pd.read_csv(processing_df)
