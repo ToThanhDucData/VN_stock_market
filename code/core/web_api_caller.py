@@ -1,3 +1,7 @@
+import re
+import numpy as np
+import pandas as pd
+
 def get_API(ticker, timestamp, days):
     sub_domain = 'apipubaws'
     domain = 'tcbs.com.vn'
