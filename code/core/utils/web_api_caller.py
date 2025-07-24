@@ -19,8 +19,7 @@ def get_API(ticker, timestamp, days):
     p4 = 'to={}'.format(param_to)
     p5 = 'countBack={}'.format(param_count_back)
     
-    api_url = f'https://{sub_domain}.{domain}/{api_type}?{p1}&{p2}&{p3}&{p4}&{p5}'
-    return api_url
+    return f'https://{sub_domain}.{domain}/{api_type}?{p1}&{p2}&{p3}&{p4}&{p5}'
 
 def extract_information(raw_json):
     print("\tFormatting data from JSON..")
