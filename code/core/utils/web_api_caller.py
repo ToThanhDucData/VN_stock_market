@@ -1,7 +1,7 @@
 import re
 import numpy as np
 import pandas as pd
-import incremental
+import utils.incremental as incremental
 from time import time, sleep, localtime, strftime
 from datetime import datetime
 
