@@ -1,6 +1,7 @@
 This project is in progress.
 
 Step 1. Create .env file under project folder:
+```
 # .env
 # Processing paths
 PROCESSING_PATH=add/your/path
@@ -20,5 +21,6 @@ INCREMENTAL_INDEX_FILE=choose_your_name.txt
 # Error paths
 ERROR_PATH=add/your/path
 ERROR_FILE=choose_your_name.txt
+```
 
 Step 2. Run main.py
