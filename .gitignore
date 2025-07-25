@@ -40,3 +40,6 @@ env/
 
 # Data folder
 /data/
+
+# Logs
+/log/
