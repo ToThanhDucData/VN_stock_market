@@ -37,3 +37,6 @@ MANIFEST
 venv/
 ENV/
 env/
+
+# Data folder
+/data/
