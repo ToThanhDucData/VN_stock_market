@@ -46,6 +46,10 @@ def get_all_stocks_historical_price(stocks_list, processing_ref, processing_df):
     print("Reading from PROCESSING INDEX file..")
     __stock_epoch = incremental.incremental_index(saved_file = processing_ref)
 
+    if __stock_epoch == 0:
+        with open(processing_df, 'a') as raw_f:
+            raw_f.write("ticker,data,dataT1\n")
+
     __all_stocks_number = len(stocks_list)
     for stock in stocks_list[__stock_epoch:]:
         print('')
