@@ -42,7 +42,7 @@ def get_stock_historical_price(stock_name, current_timestamp):
         sleep(0.5)
     return raw
 
-def get_all_price_history(stocks_list, processing_ref, processing_df):
+def get_all_stocks_historical_price(stocks_list, processing_ref, processing_df):
     print("Reading from PROCESSING INDEX file..")
     __stock_epoch = incremental.incremental_index(saved_file = processing_ref)
 

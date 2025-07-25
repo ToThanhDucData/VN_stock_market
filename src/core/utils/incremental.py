@@ -3,7 +3,7 @@ def incremental_index(saved_file):
         with open (saved_file, "r") as f:
             row_index = f.readlines()
             range_start = int(row_index[-1])
-    except Exception as e:
+    except:
         range_start = 0
 
     return range_start
