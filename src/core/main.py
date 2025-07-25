@@ -29,7 +29,7 @@ def main():
     stocks_list = stocks['ticker_id'].to_list()
     
     print("Calling API...")
-    latest_df = tcbs.get_all_price_history(stocks_list, INCREMENTAL_INDEX, PROCESSING_DATA)
+    latest_df = tcbs.get_all_stocks_historical_price(stocks_list, INCREMENTAL_INDEX, PROCESSING_DATA)
 
     print("Formatting to tabular...")
     latest_extracted = tcbs.extract_information(latest_df)
