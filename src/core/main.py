@@ -1,10 +1,7 @@
 import utils.web_api_caller as tcbs
-import numpy as np
 import pandas as pd
-import re
 import os
-from time import time, sleep, localtime, strftime
-from datetime import datetime
+from time import localtime, strftime
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,23 +10,29 @@ def main():
     #---------------------------------------------------------------
     PROCESSING_PATH = os.getenv('PROCESSING_PATH')
     PROCESSING_DATA = os.path.join(PROCESSING_PATH, os.getenv('PROCESSING_DATA_FILE'))
-    PROCESSING_INDEX = os.path.join(PROCESSING_PATH, os.getenv('PROCESSING_INDEX_FILE'))
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
-    DATA_PATH = os.getenv('DATA_PATH')
-    ALL_STOCKS = os.path.join(DATA_PATH, os.getenv('ALL_STOCKS_FILE'))
-    STOCK_HISTORICAL_PRICE = os.path.join(DATA_PATH, os.getenv('STOCK_HISTORICAL_PRICE_FILE'))
+    INCREMENTAL_INDEX_PATH = os.getenv('INCREMENTAL_INDEX_PATH')
+    INCREMENTAL_INDEX = os.path.join(INCREMENTAL_INDEX_PATH, os.getenv('INCREMENTAL_INDEX_FILE'))
     #---------------------------------------------------------------
 
-    stocks = pd.read_csv(ALL_STOCKS)
-    stocks_list = stocks['ticker'].to_list()
+    #---------------------------------------------------------------
+    INPUT_PATH = os.getenv('INPUT_PATH')
+    ALL_STOCKS = os.path.join(INPUT_PATH, os.getenv('ALL_STOCKS_FILE'))
+
+    OUTPUT_PATH = os.getenv('OUTPUT_PATH')
+    STOCK_HISTORICAL_PRICE = os.path.join(OUTPUT_PATH, os.getenv('STOCK_HISTORICAL_PRICE_FILE'))
+    #---------------------------------------------------------------
+
+    stocks = pd.read_excel(ALL_STOCKS)
+    stocks_list = stocks['ticker_id'].to_list()
     
-    print(f"Calling API...")
-    latest_df = tcbs.get_all_price_history(stocks_list, PROCESSING_INDEX, PROCESSING_DATA)
+    print("Calling API...")
+    latest_df = tcbs.get_all_price_history(stocks_list, INCREMENTAL_INDEX, PROCESSING_DATA)
 
     print("Formatting to tabular...")
-    latest_extracted = tcbs.extract_information(raw_json=latest_df)
+    latest_extracted = tcbs.extract_information(latest_df)
 
     print("Removing duplicates...")
     extracted_df = latest_extracted.copy().drop_duplicates()
