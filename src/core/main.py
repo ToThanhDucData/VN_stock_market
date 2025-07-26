@@ -14,7 +14,7 @@ def main():
 
     #---------------------------------------------------------------
     INCREMENTAL_INDEX_PATH = os.getenv('INCREMENTAL_INDEX_PATH')
-    INCREMENTAL_INDEX = os.path.join(INCREMENTAL_INDEX_PATH, os.getenv('INCREMENTAL_INDEX_FILE'))
+    ALL_HIST_INCREMENTAL_INDEX = os.path.join(INCREMENTAL_INDEX_PATH, os.getenv('ALL_HIST_INCREMENTAL_INDEX_FILE'))
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
@@ -29,7 +29,7 @@ def main():
     stocks_list = stocks['ticker_id'].to_list()
     
     print("Calling API...")
-    latest_df = tcbs.get_all_stocks_historical_price(stocks_list, INCREMENTAL_INDEX, PROCESSING_DATA)
+    latest_df = tcbs.get_all_stocks_historical_price(stocks_list, ALL_HIST_INCREMENTAL_INDEX, PROCESSING_DATA)
 
     print("Formatting to tabular...")
     latest_extracted = tcbs.extract_information(latest_df)

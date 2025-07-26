@@ -48,7 +48,7 @@ def get_all_stocks_historical_price(stocks_list, incremental_index_file, process
 
     #---------------------------------------------------------------
     if __stock_epoch == 0:
-        with open(processing_df, 'a') as raw_f:
+        with open(processing_df, 'w') as raw_f:
             raw_f.write("ticker,data,last_updated\n")
     #---------------------------------------------------------------
 
