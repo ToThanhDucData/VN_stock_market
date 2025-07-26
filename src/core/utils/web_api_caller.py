@@ -26,20 +26,21 @@ def get_API(ticker, timestamp, days):
     raw_df = pd.read_json(api_url)
     return raw_df
 
-def get_stock_historical_price(ticker_name, current_timestamp, count_back):
+def get_stock_historical_price(ticker_name, current_timestamp, count_back=None):
     raw = pd.DataFrame()
-    while True:
-        date_to_get = str(datetime.fromtimestamp(current_timestamp))[:10]
-        print(f'All {count_back} days historical prices of ticker {ticker_name} before {date_to_get}')
-        
-        raw_df = get_API(ticker = ticker_name, timestamp = current_timestamp, days = count_back)
-        raw = pd.concat([raw, raw_df])
-        
-        if raw_df.shape[0] == 0:
-            break
+    if count_back == None:
+        while True:
+            date_to_get = str(datetime.fromtimestamp(current_timestamp))[:10]
+            print(f'All {count_back} days historical prices of ticker {ticker_name} before {date_to_get}')
+            
+            raw_df = get_API(ticker = ticker_name, timestamp = current_timestamp, days = 365)
+            raw = pd.concat([raw, raw_df])
+            
+            if raw_df.shape[0] == 0:
+                break
 
-        current_timestamp -= 365*24*60*60
-        sleep(0.5)
+            current_timestamp -= 365*24*60*60
+            sleep(0.5)
     return raw
 
 def get_all_stocks_historical_price(stocks_list, incremental_index_file, processing_df):
@@ -60,7 +61,7 @@ def get_all_stocks_historical_price(stocks_list, incremental_index_file, process
         print('=====================================================')
         
         current_timestamp = int(time())
-        _raw = get_stock_historical_price(ticker_name = stock, current_timestamp = current_timestamp, count_back = 365)
+        _raw = get_stock_historical_price(ticker_name = stock, current_timestamp = current_timestamp)
         #_raw.fillna('', inplace = True)
 
         print('-----------------------------------------------------')
