@@ -31,13 +31,23 @@ def get_stock_historical_price(ticker_name, current_timestamp, count_back=None):
     if count_back == None:
         while True:
             date_to_get = str(datetime.fromtimestamp(current_timestamp))[:10]
-            print(f'All 365 days historical prices of ticker {ticker_name} before {date_to_get}')
+            print(f'Getting 1 year of historical prices of ticker {ticker_name} before {date_to_get}')
             
             raw_df = get_API(ticker = ticker_name, timestamp = current_timestamp, days = 365)
             raw = pd.concat([raw, raw_df])
             
             if raw_df.shape[0] == 0:
                 break
+
+            current_timestamp -= 365*24*60*60
+            sleep(0.5)
+    else:
+        while raw.shape[0] < count_back:
+            date_to_get = str(datetime.fromtimestamp(current_timestamp))[:10]
+            print(f'Getting 1 year of historical prices of ticker {ticker_name} before {date_to_get}')
+            
+            raw_df = get_API(ticker = ticker_name, timestamp = current_timestamp, days = 365)
+            raw = pd.concat([raw, raw_df])
 
             current_timestamp -= 365*24*60*60
             sleep(0.5)
