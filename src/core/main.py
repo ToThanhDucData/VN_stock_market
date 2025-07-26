@@ -38,7 +38,7 @@ def main():
     extracted_df = latest_extracted.copy().drop_duplicates()
     
     print("Updating 'stock_price_history.parquet'...")
-    extracted_df.to_csv(STOCK_HISTORICAL_PRICE, index=False)
+    extracted_df.to_parquet(STOCK_HISTORICAL_PRICE)
     print("'stock_price_history.parquet' was updated")
 
 if __name__ == '__main__':
