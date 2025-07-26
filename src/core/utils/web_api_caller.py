@@ -31,7 +31,7 @@ def get_stock_historical_price(ticker_name, current_timestamp, count_back=None):
     if count_back == None:
         while True:
             date_to_get = str(datetime.fromtimestamp(current_timestamp))[:10]
-            print(f'All {count_back} days historical prices of ticker {ticker_name} before {date_to_get}')
+            print(f'All 365 days historical prices of ticker {ticker_name} before {date_to_get}')
             
             raw_df = get_API(ticker = ticker_name, timestamp = current_timestamp, days = 365)
             raw = pd.concat([raw, raw_df])

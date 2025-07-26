@@ -16,7 +16,7 @@ STOCK_HISTORICAL_PRICE_FILE=choose_your_name.parquet
 
 # Incremental index paths
 INCREMENTAL_INDEX_PATH = add/your/path
-INCREMENTAL_INDEX_FILE=choose_your_name.txt
+ALL_HIST_INCREMENTAL_INDEX_FILE=choose_your_name.txt
 
 # Error paths
 ERROR_PATH=add/your/path
