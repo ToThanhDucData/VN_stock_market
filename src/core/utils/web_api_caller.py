@@ -51,6 +51,8 @@ def get_stock_historical_price(ticker_name, current_timestamp, count_back=None):
 
             current_timestamp -= 365*24*60*60
             sleep(0.5)
+        raw['date'] = raw['data'].apply(lambda x: pd.to_datetime(x['tradingDate']))
+        raw = raw.sort_values(by = 'date', ascending = False).head(count_back)
     return raw
 
 def get_all_stocks_historical_price(stocks_list, incremental_index_file, processing_df):
