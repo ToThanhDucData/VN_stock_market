@@ -1,5 +1,7 @@
-This project is in progress.
-main.py can work now.
+This project is in progress.<br>
+main.py can work now.<br>
+
+Get all historical data will take more than 4 hours to process. However, you can pause it.<br>
 
 Step 1. Create .env file under project folder:
 ```
