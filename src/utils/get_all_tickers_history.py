@@ -1,8 +1,8 @@
-import utils.tcbs_api_caller as tcbs
 import pandas as pd
 import os
 from dotenv import load_dotenv
 from utils.json_to_df import extract_information
+from utils.tcbs_api_caller import get_all_stocks_historical_price
 
 load_dotenv()
 
@@ -29,7 +29,7 @@ def get_all_tickers_history():
     stocks_list = stocks['ticker_id'].to_list()
     
     print("Calling API...")
-    latest_df = tcbs.get_all_stocks_historical_price(stocks_list, ALL_HIST_INCREMENTAL_INDEX, PROCESSING_DATA)
+    latest_df = get_all_stocks_historical_price(stocks_list, ALL_HIST_INCREMENTAL_INDEX, PROCESSING_DATA)
 
     print("Formatting to tabular...")
     latest_extracted = extract_information(latest_df)

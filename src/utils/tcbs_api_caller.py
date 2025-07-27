@@ -1,5 +1,5 @@
 import pandas as pd
-import utils.incremental as incremental
+from utils.incremental import incremental_index
 from utils.api_url import get_TCBS_API
 from time import time, sleep
 from datetime import datetime
@@ -35,7 +35,7 @@ def get_stock_historical_price(ticker_name, current_timestamp, count_back=None):
 
 def get_all_stocks_historical_price(stocks_list, incremental_index_file, processing_df):
     print("Reading from INCREMENTAL INDEX file..")
-    __stock_epoch = incremental.incremental_index(saved_file = incremental_index_file)
+    __stock_epoch = incremental_index(saved_file = incremental_index_file)
 
     #---------------------------------------------------------------
     if __stock_epoch == 0:
