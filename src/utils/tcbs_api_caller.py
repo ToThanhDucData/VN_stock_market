@@ -1,6 +1,7 @@
 import pandas as pd
 from utils.incremental import incremental_index
 from utils.api_url import get_TCBS_API
+from utils.dynamic_name import add_text
 from time import time, sleep
 from datetime import datetime
 
@@ -41,7 +42,9 @@ def get_all_stocks_historical_price(stocks_list:list
                                     ,processing_df:str
                                     ,test:bool = False
                                     ) -> pd.DataFrame:
-    print("Reading from INCREMENTAL INDEX {} file..".format('test' if test else ''))
+    test_file_name = add_text('TEST', test)
+    
+    print("Reading from INCREMENTAL INDEX {} file..".format(test_file_name))
     __stock_epoch = incremental_index(saved_file = incremental_index_file)
 
     #---------------------------------------------------------------
@@ -61,21 +64,21 @@ def get_all_stocks_historical_price(stocks_list:list
         _raw = get_stock_historical_price(ticker_name = stock, current_timestamp = current_timestamp)
 
         print('-----------------------------------------------------')
-        print("Updating PROCESSING DATA {}..".format('TEST' if test else ''))
+        print("Updating PROCESSING DATA {}..".format(test_file_name))
         with open(processing_df, 'a') as raw_f:
             for _, row in _raw.iterrows():
                 raw_f.write(row.ticker + ",\"" + str(row.data) + "\"," + str(time()) + '\n')
-        print("---PROCESSING DATA {} UPDATED.---".format('TEST' if test else ''))
+        print("---PROCESSING DATA {} UPDATED.---".format(test_file_name))
         print('-----------------------------------------------------')
         __stock_epoch += 1
         print(f'{stock} Completed.')
         print('{:,}/{:,}'.format(__stock_epoch, __all_stocks_number))
 
         print('-----------------------------------------------------')
-        print("Updating INCREMENTAL INDEX {}..".format('TEST' if test else ''))
+        print("Updating INCREMENTAL INDEX {}..".format(test_file_name))
         with open (incremental_index_file, 'a') as index_f:
             index_f.write(str(__stock_epoch) + '\n')
-        print("---INCREMENTAL INDEX {} UPDATED.---".format('TEST' if test else ''))
+        print("---INCREMENTAL INDEX {} UPDATED.---".format(test_file_name))
         print('-----------------------------------------------------')
         print('=====================================================')
         print('')

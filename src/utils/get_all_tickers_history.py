@@ -3,10 +3,13 @@ import os
 from dotenv import load_dotenv
 from utils.json_to_df import extract_information
 from utils.tcbs_api_caller import get_all_stocks_historical_price
+from utils.dynamic_name import add_text, path_index
 
 load_dotenv()
 
 def get_all_tickers_history(test:bool = False) -> None:
+    test_file_name = add_text('_test', test)
+
     test_env = [
         'PROCESSING_DATA_TEST_FILE'
         ,'ALL_HIST_INCREMENTAL_INDEX_TEST_FILE'
@@ -21,22 +24,24 @@ def get_all_tickers_history(test:bool = False) -> None:
         ,'STOCK_HISTORICAL_PRICE_FILE'
     ]
 
+    to_get_path = [path_index(test_env, prod_env, i, test) for i in range(len(prod_env))]
+
     #---------------------------------------------------------------
     PROCESSING_PATH = os.getenv('PROCESSING_PATH')
-    PROCESSING_DATA = os.path.join(PROCESSING_PATH, os.getenv(test_env[0] if test else prod_env[0]))
+    PROCESSING_DATA = os.path.join(PROCESSING_PATH, os.getenv(to_get_path[0]))
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
     INCREMENTAL_INDEX_PATH = os.getenv('INCREMENTAL_INDEX_PATH')
-    ALL_HIST_INCREMENTAL_INDEX = os.path.join(INCREMENTAL_INDEX_PATH, os.getenv(test_env[1] if test else prod_env[1]))
+    ALL_HIST_INCREMENTAL_INDEX = os.path.join(INCREMENTAL_INDEX_PATH, os.getenv(to_get_path[1]))
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
     INPUT_PATH = os.getenv('INPUT_PATH')
-    ALL_STOCKS = os.path.join(INPUT_PATH, os.getenv(test_env[2] if test else prod_env[2]))
+    ALL_STOCKS = os.path.join(INPUT_PATH, os.getenv(to_get_path[2]))
 
     OUTPUT_PATH = os.getenv('OUTPUT_PATH')
-    STOCK_HISTORICAL_PRICE = os.path.join(OUTPUT_PATH, os.getenv(test_env[3] if test else prod_env[3]))
+    STOCK_HISTORICAL_PRICE = os.path.join(OUTPUT_PATH, os.getenv(to_get_path[3]))
     #---------------------------------------------------------------
 
     stocks = pd.read_excel(ALL_STOCKS)
@@ -51,6 +56,6 @@ def get_all_tickers_history(test:bool = False) -> None:
     print("Removing duplicates...")
     extracted_df = latest_extracted.copy().drop_duplicates()
     
-    print("Updating 'stock_price_history{}.parquet'...".format('_test' if test else ''))
+    print("Updating 'stock_price_history{}.parquet'...".format(test_file_name))
     extracted_df.to_parquet(STOCK_HISTORICAL_PRICE)
-    print("'stock_price_history{}.parquet' was updated".format('_test' if test else ''))
+    print("'stock_price_history{}.parquet' was updated".format(test_file_name))
