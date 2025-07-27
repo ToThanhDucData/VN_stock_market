@@ -1,6 +1,6 @@
 import pandas as pd
 
-def get_TCBS_API(ticker, timestamp, days):
+def get_TCBS_API(ticker:str, timestamp:int, days:int) -> pd.DataFrame:
     sub_domain = 'apipubaws'
     domain = 'tcbs.com.vn'
     api_type = 'stock-insight/v2/stock/bars-long-term'
