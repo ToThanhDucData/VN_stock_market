@@ -13,7 +13,8 @@ PROCESSING_DATA_FILE=choose_your_name.csv
 
 # Data paths
 INPUT_PATH=add/your/path
-ALL_STOCKS_FILE=choose_your_tickers_list_name.xlsx
+ALL_STOCKS_TEST_FILE=choose_your_small_tickers_list_name.xlsx
+ALL_STOCKS_FILE=choose_your_complete_tickers_list_name.xlsx
 
 OUTPUT_PATH=add/your/path
 STOCK_HISTORICAL_PRICE_FILE=choose_your_name.parquet
