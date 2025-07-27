@@ -1,6 +1,6 @@
 import os
-from time import localtime, strftime
 from utils.get_all_tickers_history import get_all_tickers_history
+from utils.error_log import errors_log
 
 
 def main():
@@ -15,6 +15,4 @@ if __name__ == '__main__':
     try:
         main()
     except Exception as e:
-        curr_time = strftime("%Y:%m:%d %H:%M:%S", localtime())
-        with open(ERROR, 'a') as f:
-            f.write(f'[{curr_time}] --- {e} \n')
+        errors_log(ERROR, e)
