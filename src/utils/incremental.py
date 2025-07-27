@@ -1,4 +1,4 @@
-def incremental_index(saved_file):
+def incremental_index(saved_file:str) -> int:
     try:
         with open (saved_file, "r") as f:
             row_index = f.readlines()

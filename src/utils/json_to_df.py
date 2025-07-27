@@ -2,7 +2,7 @@ import re
 import numpy as np
 import pandas as pd
 
-def extract_information(raw_json):
+def extract_information(raw_json:pd.DataFrame) -> pd.DataFrame:
     print("\tFormatting data from JSON..")
     raw_json['data'] = raw_json['data'].apply(lambda x: re.sub("[{ }]", "", x).split(","))
     print('\t-----------------------------------------------------')

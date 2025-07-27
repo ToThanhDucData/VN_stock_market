@@ -4,7 +4,10 @@ from utils.api_url import get_TCBS_API
 from time import time, sleep
 from datetime import datetime
 
-def get_stock_historical_price(ticker_name, current_timestamp, count_back=None):
+def get_stock_historical_price(ticker_name:str
+                               ,current_timestamp:int
+                               ,count_back:int = None
+                               ) -> pd.DataFrame:
     raw = pd.DataFrame()
     if count_back == None:
         while True:
@@ -33,8 +36,12 @@ def get_stock_historical_price(ticker_name, current_timestamp, count_back=None):
         raw = raw.sort_values(by = 'date', ascending = False).head(count_back)
     return raw
 
-def get_all_stocks_historical_price(stocks_list, incremental_index_file, processing_df):
-    print("Reading from INCREMENTAL INDEX file..")
+def get_all_stocks_historical_price(stocks_list:list
+                                    ,incremental_index_file:str
+                                    ,processing_df:str
+                                    ,test:bool = False
+                                    ) -> pd.DataFrame:
+    print("Reading from INCREMENTAL INDEX {} file..".format('test' if test else ''))
     __stock_epoch = incremental_index(saved_file = incremental_index_file)
 
     #---------------------------------------------------------------
@@ -52,24 +59,23 @@ def get_all_stocks_historical_price(stocks_list, incremental_index_file, process
         
         current_timestamp = int(time())
         _raw = get_stock_historical_price(ticker_name = stock, current_timestamp = current_timestamp)
-        #_raw.fillna('', inplace = True)
 
         print('-----------------------------------------------------')
-        print("Updating PROCESSING DATA..")
+        print("Updating PROCESSING DATA {}..".format('TEST' if test else ''))
         with open(processing_df, 'a') as raw_f:
             for _, row in _raw.iterrows():
                 raw_f.write(row.ticker + ",\"" + str(row.data) + "\"," + str(time()) + '\n')
-        print("---PROCESSING DATA UPDATED.---")
+        print("---PROCESSING DATA {} UPDATED.---".format('TEST' if test else ''))
         print('-----------------------------------------------------')
         __stock_epoch += 1
         print(f'{stock} Completed.')
         print('{:,}/{:,}'.format(__stock_epoch, __all_stocks_number))
 
         print('-----------------------------------------------------')
-        print("Updating INCREMENTAL INDEX..")
+        print("Updating INCREMENTAL INDEX {}..".format('TEST' if test else ''))
         with open (incremental_index_file, 'a') as index_f:
             index_f.write(str(__stock_epoch) + '\n')
-        print("---INCREMENTAL INDEX UPDATED.---")
+        print("---INCREMENTAL INDEX {} UPDATED.---".format('TEST' if test else ''))
         print('-----------------------------------------------------')
         print('=====================================================')
         print('')

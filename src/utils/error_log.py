@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def errors_log(e):
+def errors_log(e:str) -> None:
     #---------------------------------------------------------------
     ERROR_PATH = os.getenv('ERROR_PATH')
     ERROR = os.path.join(ERROR_PATH, os.getenv('ERROR_FILE'))
