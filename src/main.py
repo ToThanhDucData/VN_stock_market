@@ -3,7 +3,8 @@ from utils.error_log import errors_log
 
 
 def main():
-    get_all_tickers_history()
+    test = False
+    get_all_tickers_history(test)
 
 if __name__ == '__main__':
     try:

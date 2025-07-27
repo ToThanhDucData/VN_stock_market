@@ -6,7 +6,7 @@ from utils.tcbs_api_caller import get_all_stocks_historical_price
 
 load_dotenv()
 
-def get_all_tickers_history():
+def get_all_tickers_history(test = False):
     #---------------------------------------------------------------
     PROCESSING_PATH = os.getenv('PROCESSING_PATH')
     PROCESSING_DATA = os.path.join(PROCESSING_PATH, os.getenv('PROCESSING_DATA_FILE'))
@@ -20,12 +20,16 @@ def get_all_tickers_history():
     #---------------------------------------------------------------
     INPUT_PATH = os.getenv('INPUT_PATH')
     ALL_STOCKS = os.path.join(INPUT_PATH, os.getenv('ALL_STOCKS_FILE'))
+    ALL_STOCKS_TEST = os.path.join(INPUT_PATH, os.getenv('ALL_STOCKS_TEST_FILE'))
 
     OUTPUT_PATH = os.getenv('OUTPUT_PATH')
     STOCK_HISTORICAL_PRICE = os.path.join(OUTPUT_PATH, os.getenv('STOCK_HISTORICAL_PRICE_FILE'))
     #---------------------------------------------------------------
 
-    stocks = pd.read_excel(ALL_STOCKS)
+    if test:
+        stocks = pd.read_excel(ALL_STOCKS_TEST)
+    else:
+        stocks = pd.read_excel(ALL_STOCKS)
     stocks_list = stocks['ticker_id'].to_list()
     
     print("Calling API...")
