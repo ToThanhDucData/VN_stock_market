@@ -2,7 +2,7 @@ This project is in progress.<br>
 main.py can work now.<br>
 
 Get all historical data will take more than 4 hours to process.<br>
-However, you can pause it.<b>Next run, it continue.</b><br>
+However, you can pause it. <b>Next run, it continue.</b><br>
 
 ### Instruction:
 Step 1. Create .env file under project folder:
