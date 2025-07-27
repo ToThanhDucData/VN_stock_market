@@ -1,5 +1,5 @@
 from utils.get_all_tickers_history import get_all_tickers_history
-from utils.error_log import errors_log
+from utils.error_handling import errors_log
 
 
 def main():
