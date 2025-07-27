@@ -1,4 +1,5 @@
 This project is in progress.
+main.py can work now.
 
 Step 1. Create .env file under project folder:
 ```
