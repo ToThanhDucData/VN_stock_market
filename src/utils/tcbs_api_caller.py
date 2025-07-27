@@ -1,7 +1,7 @@
 import pandas as pd
 import utils.incremental as incremental
 from utils.api_url import get_TCBS_API
-from time import time, sleep, localtime, strftime
+from time import time, sleep
 from datetime import datetime
 
 def get_stock_historical_price(ticker_name, current_timestamp, count_back=None):
