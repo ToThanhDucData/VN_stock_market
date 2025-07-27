@@ -1,5 +1,8 @@
 from time import localtime, strftime
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def errors_log(e):
     #---------------------------------------------------------------
