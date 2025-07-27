@@ -1,7 +1,8 @@
-import utils.web_api_caller as tcbs
+import utils.tcbs_api_caller as tcbs
 import pandas as pd
 import os
 from dotenv import load_dotenv
+from utils.json_to_df import extract_information
 
 load_dotenv()
 
@@ -31,7 +32,7 @@ def get_all_tickers_history():
     latest_df = tcbs.get_all_stocks_historical_price(stocks_list, ALL_HIST_INCREMENTAL_INDEX, PROCESSING_DATA)
 
     print("Formatting to tabular...")
-    latest_extracted = tcbs.extract_information(latest_df)
+    latest_extracted = extract_information(latest_df)
 
     print("Removing duplicates...")
     extracted_df = latest_extracted.copy().drop_duplicates()
