@@ -3,45 +3,30 @@ import os
 from dotenv import load_dotenv
 from utils.json_to_df import extract_information
 from utils.tcbs_api_caller import get_all_stocks_historical_price
-from utils.dynamic_name import add_text, path_index
+from utils.dynamic_name import add_text
 
 load_dotenv()
 
 def get_all_tickers_history(test:bool = False) -> None:
     test_file_name = add_text('_test', test)
-
-    test_env = [
-        'PROCESSING_DATA_TEST_FILE'
-        ,'ALL_HIST_INCREMENTAL_INDEX_TEST_FILE'
-        ,'ALL_STOCKS_TEST_FILE'
-        ,'STOCK_HISTORICAL_PRICE_TEST_FILE'
-    ]
-
-    prod_env = [
-        'PROCESSING_DATA_FILE'
-        ,'ALL_HIST_INCREMENTAL_INDEX_FILE'
-        ,'ALL_STOCKS_FILE'
-        ,'STOCK_HISTORICAL_PRICE_FILE'
-    ]
-
-    to_get_path = [path_index(test_env, prod_env, i, test) for i in range(len(prod_env))]
+    test_env_name = add_text('TEST_', test)
 
     #---------------------------------------------------------------
     PROCESSING_PATH = os.getenv('PROCESSING_PATH')
-    PROCESSING_DATA = os.path.join(PROCESSING_PATH, os.getenv(to_get_path[0]))
+    PROCESSING_DATA = os.path.join(PROCESSING_PATH, os.getenv('PROCESSING_DATA_{}FILE'.format(test_env_name)))
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
     INCREMENTAL_INDEX_PATH = os.getenv('INCREMENTAL_INDEX_PATH')
-    ALL_HIST_INCREMENTAL_INDEX = os.path.join(INCREMENTAL_INDEX_PATH, os.getenv(to_get_path[1]))
+    ALL_HIST_INCREMENTAL_INDEX = os.path.join(INCREMENTAL_INDEX_PATH, os.getenv('ALL_HIST_INCREMENTAL_INDEX_{}FILE'.format(test_env_name)))
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
     INPUT_PATH = os.getenv('INPUT_PATH')
-    ALL_STOCKS = os.path.join(INPUT_PATH, os.getenv(to_get_path[2]))
+    ALL_STOCKS = os.path.join(INPUT_PATH, os.getenv('ALL_STOCKS_{}FILE'.format(test_env_name)))
 
     OUTPUT_PATH = os.getenv('OUTPUT_PATH')
-    STOCK_HISTORICAL_PRICE = os.path.join(OUTPUT_PATH, os.getenv(to_get_path[3]))
+    STOCK_HISTORICAL_PRICE = os.path.join(OUTPUT_PATH, os.getenv('STOCK_HISTORICAL_PRICE_{}FILE'.format(test_env_name)))
     #---------------------------------------------------------------
 
     stocks = pd.read_excel(ALL_STOCKS)

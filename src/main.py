@@ -1,9 +1,8 @@
 from utils.get_all_tickers_history import get_all_tickers_history
 from utils.error_handling import errors_log
 
-
 def main():
-    test = False
+    test = True
     get_all_tickers_history(test)
 
 if __name__ == '__main__':
