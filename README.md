@@ -26,6 +26,8 @@ STOCK_HISTORICAL_PRICE_TEST_FILE     = add_your_name_test.parquet
 INCREMENTAL_INDEX_PATH               = add/your/path
 ALL_HIST_INCREMENTAL_INDEX_FILE      = add_your_name.txt
 ALL_HIST_INCREMENTAL_INDEX_TEST_FILE = add_your_name_test.txt
+DAILY_INCREMENTAL_INDEX_FILE         = add_your_name.txt
+DAILY_INCREMENTAL_INDEX_TEST_FILE    = add_your_name.txt
 
 # Error paths
 ERROR_PATH                           = add/your/path
