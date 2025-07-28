@@ -9,24 +9,23 @@ load_dotenv()
 
 def get_all_tickers_history(test:bool = False) -> None:
     test_file_name = add_text('_test', test)
-    test_env_name = add_text('TEST_', test)
 
     #---------------------------------------------------------------
     PROCESSING_PATH = os.getenv('PROCESSING_PATH')
-    PROCESSING_DATA = os.path.join(PROCESSING_PATH, os.getenv('PROCESSING_DATA_{}FILE'.format(test_env_name)))
+    PROCESSING_DATA = os.path.join(PROCESSING_PATH, os.getenv('PROCESSING_DATA{}_FILE'.format(test_file_name.upper())))
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
     INCREMENTAL_INDEX_PATH = os.getenv('INCREMENTAL_INDEX_PATH')
-    ALL_HIST_INCREMENTAL_INDEX = os.path.join(INCREMENTAL_INDEX_PATH, os.getenv('ALL_HIST_INCREMENTAL_INDEX_{}FILE'.format(test_env_name)))
+    ALL_HIST_INCREMENTAL_INDEX = os.path.join(INCREMENTAL_INDEX_PATH, os.getenv('ALL_HIST_INCREMENTAL_INDEX{}_FILE'.format(test_file_name.upper())))
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
     INPUT_PATH = os.getenv('INPUT_PATH')
-    ALL_STOCKS = os.path.join(INPUT_PATH, os.getenv('ALL_STOCKS_{}FILE'.format(test_env_name)))
+    ALL_STOCKS = os.path.join(INPUT_PATH, os.getenv('ALL_STOCKS{}_FILE'.format(test_file_name.upper())))
 
     OUTPUT_PATH = os.getenv('OUTPUT_PATH')
-    STOCK_HISTORICAL_PRICE = os.path.join(OUTPUT_PATH, os.getenv('STOCK_HISTORICAL_PRICE_{}FILE'.format(test_env_name)))
+    STOCK_HISTORICAL_PRICE = os.path.join(OUTPUT_PATH, os.getenv('STOCK_HISTORICAL_PRICE{}_FILE'.format(test_file_name.upper())))
     #---------------------------------------------------------------
 
     stocks = pd.read_excel(ALL_STOCKS)
