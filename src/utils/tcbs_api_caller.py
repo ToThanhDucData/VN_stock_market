@@ -14,6 +14,7 @@ def get_price_without_countback(ticker_name:str
         #----------------------------------------------------------------
         date_to_get = str(datetime.fromtimestamp(current_timestamp))[:10]
         #----------------------------------------------------------------
+
         print(f'Getting 1 year of historical prices of ticker {ticker_name} before {date_to_get}')
         
         raw_df = get_TCBS_API(ticker = ticker_name, timestamp = current_timestamp, days = 365)
@@ -71,6 +72,23 @@ def get_stock_historical_price(ticker_name:str
                                            )
     return raw
 
+def write_header_to_process_df(file_path:str) -> None:
+    with open(file_path, 'w') as raw_f:
+        raw_f.write("ticker,data,last_updated\n")
+
+def write_content_to_process_df(file_path:str
+                                ,df: pd.DataFrame
+                                ) -> None:
+    with open(file_path, 'a') as raw_f:
+        for _, row in df.iterrows():
+            raw_f.write(row.ticker + ",\"" + str(row.data) + "\"," + str(time()) + '\n')
+
+def write_number_to_increment_file(file_path:str
+                                   ,number:int
+                                   ) -> None:
+    with open (file_path, 'a') as index_f:
+        index_f.write(str(number) + '\n')
+
 def get_all_stocks_historical_price(stocks_list:list
                                     ,incremental_index_file:str
                                     ,processing_df:str
@@ -83,8 +101,7 @@ def get_all_stocks_historical_price(stocks_list:list
 
     #---------------------------------------------------------------
     if __stock_epoch == 0:
-        with open(processing_df, 'w') as raw_f:
-            raw_f.write("ticker,data,last_updated\n")
+        write_header_to_process_df(processing_df = processing_df)
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
@@ -99,19 +116,23 @@ def get_all_stocks_historical_price(stocks_list:list
 
         print('-----------------------------------------------------')
         print("Updating PROCESSING DATA{}..".format(test_file_name))
-        with open(processing_df, 'a') as raw_f:
-            for _, row in _raw.iterrows():
-                raw_f.write(row.ticker + ",\"" + str(row.data) + "\"," + str(time()) + '\n')
+        
+        write_content_to_process_df(file_path = processing_df
+                                    ,df = _raw
+                                    )
+        
         print("---PROCESSING DATA{} UPDATED.---".format(test_file_name))
         print('-----------------------------------------------------')
+        
         __stock_epoch += 1
         print(f'{stock} Completed.')
         print('{:,}/{:,}'.format(__stock_epoch, __all_stocks_number))
 
         print('-----------------------------------------------------')
         print("Updating INCREMENTAL INDEX{}..".format(test_file_name))
-        with open (incremental_index_file, 'a') as index_f:
-            index_f.write(str(__stock_epoch) + '\n')
+        write_number_to_increment_file(file_path = incremental_index_file
+                                       ,number = __stock_epoch
+                                       )
         print("---INCREMENTAL INDEX{} UPDATED.---".format(test_file_name))
         print('-----------------------------------------------------')
         print('=====================================================')
