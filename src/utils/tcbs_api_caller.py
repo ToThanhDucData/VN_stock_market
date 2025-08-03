@@ -140,3 +140,58 @@ def get_all_stocks_historical_price(stocks_list:list
     #---------------------------------------------------------------
 
     return pd.read_csv(processing_df)
+
+def get_daily_stocks_historical_price(stocks_list:list
+                                    ,daily_incremental_index_file:str
+                                    ,processing_df:str
+                                    ,test:bool = False
+                                    ) -> pd.DataFrame:
+    test_file_name = add_text(' TEST', test)
+    
+    print("Reading from INCREMENTAL INDEX{} file..".format(test_file_name))
+    __stock_epoch = incremental_index(saved_file = daily_incremental_index_file)
+
+    #---------------------------------------------------------------
+    if __stock_epoch == 0:
+        write_header_to_process_df(processing_df = processing_df)
+    #---------------------------------------------------------------
+
+    #---------------------------------------------------------------
+    __all_stocks_number = len(stocks_list)
+    for stock in stocks_list[__stock_epoch:]:
+        print('')
+        print(f'Updating all historical prices for ticker {stock}...')
+        print('=====================================================')
+        
+        current_timestamp = int(time())
+        _raw = get_stock_historical_price(ticker_name = stock
+                                          ,current_timestamp = current_timestamp
+                                          ,count_back = 30
+                                          )
+
+        print('-----------------------------------------------------')
+        print("Updating PROCESSING DATA{}..".format(test_file_name))
+        
+        write_content_to_process_df(file_path = processing_df
+                                    ,df = _raw
+                                    )
+        
+        print("---PROCESSING DATA{} UPDATED.---".format(test_file_name))
+        print('-----------------------------------------------------')
+        
+        __stock_epoch += 1
+        print(f'{stock} Completed.')
+        print('{:,}/{:,}'.format(__stock_epoch, __all_stocks_number))
+
+        print('-----------------------------------------------------')
+        print("Updating INCREMENTAL INDEX{}..".format(test_file_name))
+        write_number_to_increment_file(file_path = daily_incremental_index_file
+                                       ,number = __stock_epoch
+                                       )
+        print("---INCREMENTAL INDEX{} UPDATED.---".format(test_file_name))
+        print('-----------------------------------------------------')
+        print('=====================================================')
+        print('')
+    #---------------------------------------------------------------
+
+    return pd.read_csv(processing_df)

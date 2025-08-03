@@ -2,12 +2,12 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 from utils.json_to_df import extract_information
-from utils.tcbs_api_caller import get_all_stocks_historical_price
+from utils.tcbs_api_caller import get_daily_stocks_historical_price
 from utils.dynamic_name import add_text
 
 load_dotenv()
 
-def get_all_tickers_history(test:bool = False) -> None:
+def get_daily_tickers_history(test:bool = False) -> None:
     test_file_name = add_text('_test', test)
 
     #---------------------------------------------------------------
@@ -32,7 +32,7 @@ def get_all_tickers_history(test:bool = False) -> None:
     stocks_list = stocks['ticker_id'].to_list()
     
     print("Calling API...")
-    latest_df = get_all_stocks_historical_price(stocks_list, DAILY_INCREMENTAL_INDEX, PROCESSING_DATA, test)
+    latest_df = get_daily_stocks_historical_price(stocks_list, DAILY_INCREMENTAL_INDEX, PROCESSING_DATA, test)
 
     print("Formatting to tabular...")
     latest_extracted = extract_information(latest_df)
