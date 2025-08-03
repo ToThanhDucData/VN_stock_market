@@ -1,9 +1,11 @@
+from utils.dynamic_name import get_cond
 from utils.get_all_tickers_history import get_all, get_daily
 from utils.error_handling import errors_log
 
 def main():
     test = True
     feature_selection = 1
+
     if feature_selection == 1:
         get_all(test)
     elif feature_selection == 2:
