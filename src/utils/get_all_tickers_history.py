@@ -82,5 +82,7 @@ def get_daily(test:bool = False) -> None:
     print("Updating 'stock_price_history{}.csv'...".format(test_file_name))
     extracted_df.to_csv(STOCK_HISTORICAL_PRICE
                         ,index = False
-                        ,mode = 'a')
+                        ,mode = 'a'
+                        ,header = False
+                        )
     print("'stock_price_history{}.csv' was updated".format(test_file_name))
