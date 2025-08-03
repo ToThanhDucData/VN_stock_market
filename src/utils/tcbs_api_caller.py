@@ -5,6 +5,23 @@ from utils.dynamic_name import add_text
 from time import time, sleep
 from datetime import datetime
 
+def write_header_to_process_df(file_path:str) -> None:
+    with open(file_path, 'w') as raw_f:
+        raw_f.write("ticker,data,last_updated\n")
+
+def write_content_to_process_df(file_path:str
+                                ,df: pd.DataFrame
+                                ) -> None:
+    with open(file_path, 'a') as raw_f:
+        for _, row in df.iterrows():
+            raw_f.write(row.ticker + ",\"" + str(row.data) + "\"," + str(time()) + '\n')
+
+def write_number_to_increment_file(file_path:str
+                                   ,number:int
+                                   ) -> None:
+    with open (file_path, 'a') as index_f:
+        index_f.write(str(number) + '\n')
+
 def get_price_without_countback(ticker_name:str
                                 ,current_timestamp:int
                                 ) -> pd.DataFrame:
@@ -71,23 +88,6 @@ def get_stock_historical_price(ticker_name:str
                                            ,count_back=count_back
                                            )
     return raw
-
-def write_header_to_process_df(file_path:str) -> None:
-    with open(file_path, 'w') as raw_f:
-        raw_f.write("ticker,data,last_updated\n")
-
-def write_content_to_process_df(file_path:str
-                                ,df: pd.DataFrame
-                                ) -> None:
-    with open(file_path, 'a') as raw_f:
-        for _, row in df.iterrows():
-            raw_f.write(row.ticker + ",\"" + str(row.data) + "\"," + str(time()) + '\n')
-
-def write_number_to_increment_file(file_path:str
-                                   ,number:int
-                                   ) -> None:
-    with open (file_path, 'a') as index_f:
-        index_f.write(str(number) + '\n')
 
 def get_all_stocks_historical_price(stocks_list:list
                                     ,incremental_index_file:str
