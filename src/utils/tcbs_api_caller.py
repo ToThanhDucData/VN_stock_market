@@ -5,12 +5,15 @@ from utils.dynamic_name import add_text
 from time import time, sleep
 from datetime import datetime
 
-def get_stock_historical_price_count_back_none(ticker_name:str
-                                               ,current_timestamp:int
-                                               ) -> pd.DataFrame:
+def get_price_without_countback(ticker_name:str
+                                ,current_timestamp:int
+                                ) -> pd.DataFrame:
     raw = pd.DataFrame()
     while True:
+        # Convert TIMESTAMP to YYYY-MM-DD
+        #----------------------------------------------------------------
         date_to_get = str(datetime.fromtimestamp(current_timestamp))[:10]
+        #----------------------------------------------------------------
         print(f'Getting 1 year of historical prices of ticker {ticker_name} before {date_to_get}')
         
         raw_df = get_TCBS_API(ticker = ticker_name, timestamp = current_timestamp, days = 365)
@@ -24,13 +27,17 @@ def get_stock_historical_price_count_back_none(ticker_name:str
 
     return raw
 
-def get_stock_historical_price_count_back_not_none(ticker_name:str
-                                                   ,current_timestamp:int
-                                                   ,count_back:int
-                                                   ) -> pd.DataFrame:
+def get_price_with_countback(ticker_name:str
+                             ,current_timestamp:int
+                             ,count_back:int
+                             ) -> pd.DataFrame:
     raw = pd.DataFrame()
     while raw.shape[0] < count_back:
+        # Convert TIMESTAMP to YYYY-MM-DD
+        #----------------------------------------------------------------
         date_to_get = str(datetime.fromtimestamp(current_timestamp))[:10]
+        #----------------------------------------------------------------
+
         print(f'Getting 1 year of historical prices of ticker {ticker_name} before {date_to_get}')
         
         raw_df = get_TCBS_API(ticker = ticker_name, timestamp = current_timestamp, days = 365)
@@ -48,17 +55,20 @@ def get_stock_historical_price(ticker_name:str
                                ,count_back:int = None
                                ) -> pd.DataFrame:
     if count_back == None:
-        raw = get_stock_historical_price_count_back_none(ticker_name=ticker_name
-                                                         ,current_timestamp=current_timestamp)
+        raw = get_price_without_countback(ticker_name=ticker_name
+                                          ,current_timestamp=current_timestamp
+                                          )
     else:
         if count_back < 365:
             raw = get_TCBS_API(ticker = ticker_name
                                ,timestamp = current_timestamp
-                               ,days = count_back)
+                               ,days = count_back
+                               )
         else:
-            raw = get_stock_historical_price_count_back_not_none(ticker_name=ticker_name
-                                                                 ,current_timestamp=current_timestamp
-                                                                 ,count_back=count_back)
+            raw = get_price_with_countback(ticker_name=ticker_name
+                                           ,current_timestamp=current_timestamp
+                                           ,count_back=count_back
+                                           )
     return raw
 
 def get_all_stocks_historical_price(stocks_list:list
