@@ -3,8 +3,8 @@ from utils.get_all_tickers_history import get_all, get_daily
 from utils.error_handling import errors_log
 
 def main():
-    test = True
-    feature_selection = 1
+    test = False
+    feature_selection = 2
 
     if feature_selection == 1:
         get_all(test)

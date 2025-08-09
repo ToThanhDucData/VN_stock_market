@@ -68,7 +68,7 @@ def get_daily(test:bool = False) -> None:
     
     print("Calling API...")
     latest_df = get_daily_stocks_historical_price(stocks_list
-                                                  ,get_all_paths(test)['all_hist_index']
+                                                  ,get_all_paths(test)['daily_index']
                                                   ,get_all_paths(test)['process']
                                                   ,test
                                                   )

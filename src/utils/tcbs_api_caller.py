@@ -78,10 +78,12 @@ def get_stock_historical_price(ticker_name:str
                                           )
     else:
         if count_back < 365:
+            print(f'Getting {count_back} days of historical prices of ticker {ticker_name}')
             raw = get_TCBS_API(ticker = ticker_name
                                ,timestamp = current_timestamp
                                ,days = count_back
                                )
+            sleep(0.5)
         else:
             raw = get_price_with_countback(ticker_name=ticker_name
                                            ,current_timestamp=current_timestamp
@@ -101,7 +103,7 @@ def get_all_stocks_historical_price(stocks_list:list
 
     #---------------------------------------------------------------
     if __stock_epoch == 0:
-        write_header_to_process_df(processing_df = processing_df)
+        write_header_to_process_df(file_path = processing_df)
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
@@ -153,7 +155,7 @@ def get_daily_stocks_historical_price(stocks_list:list
 
     #---------------------------------------------------------------
     if __stock_epoch == 0:
-        write_header_to_process_df(processing_df = processing_df)
+        write_header_to_process_df(file_path = processing_df)
     #---------------------------------------------------------------
 
     #---------------------------------------------------------------
